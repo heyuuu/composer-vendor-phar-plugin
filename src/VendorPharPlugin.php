@@ -1,13 +1,13 @@
 <?php
 
-namespace ZipVendor;
+namespace VendorPharPlugin;
 
 use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 
-class ZipVendorPlugin implements PluginInterface, EventSubscriberInterface
+class VendorPharPlugin implements PluginInterface, EventSubscriberInterface
 {
     public function activate(Composer $composer, IOInterface $io)
     {
@@ -27,8 +27,8 @@ class ZipVendorPlugin implements PluginInterface, EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'post-install-cmd' => EventHandler::class . '::zipVendor',
-            'post-update-cmd'  => EventHandler::class . '::zipVendor',
+            'post-install-cmd' => EventHandler::class . '::handle',
+            'post-update-cmd'  => EventHandler::class . '::handle',
         ];
     }
 }

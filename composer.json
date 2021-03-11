@@ -1,5 +1,5 @@
 {
-    "name": "heyu/zip-vendor-plugin",
+    "name": "heyuuu/vendor-phar-plugin",
     "type": "composer-plugin",
     "description": "",
     "authors": [
@@ -17,14 +17,14 @@
     },
     "autoload": {
         "psr-4": {
-            "ZipVendor\\": "src"
+            "VendorPharPlugin\\": "src"
         }
     },
     "extra": {
-        "class": "ZipVendor\\ZipVendorPlugin"
+        "class": "VendorPharPlugin\\VendorPharPlugin"
     },
     "scripts": {
-        "post-install-cmd": "ZipVendor\\EventHandler::zipVendor",
-        "post-update-cmd": "ZipVendor\\EventHandler::zipVendor"
+        "post-install-cmd": "VendorPharPlugin\\EventHandler::handle",
+        "post-update-cmd": "VendorPharPlugin\\EventHandler::handle"
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace ZipVendor;
+namespace VendorPharPlugin;
 
 use Composer\IO\IOInterface;
 use Composer\Script\Event;
@@ -23,7 +23,7 @@ class EventHandler
         return true;
     }
 
-    public static function zipVendor(Event $event)
+    public static function handle(Event $event)
     {
         // 若环境监测未通过，则直接返回
         if (!static::checkEnvironment($event->getIO())) {
@@ -63,10 +63,7 @@ AUTOLOAD;
         $newSuffix    = md5(uniqid('', true));
         $replaceFiles = ['autoload.php', 'composer/autoload_real.php', 'composer/autoload_static.php'];
         foreach ($replaceFiles as $replaceFile) {
-            echo ">>>>>>" . $replaceFile, PHP_EOL;
-            echo $phar[$replaceFile];
             $phar[$replaceFile] = str_replace($oldSuffix, $newSuffix, $phar[$replaceFile]->getContent());
-            echo $phar[$replaceFile];
         }
 
         $phar->setDefaultStub('autoload.php');
