@@ -1,0 +1,30 @@
+{
+    "name": "heyu/zip-vendor-plugin",
+    "type": "composer-plugin",
+    "description": "",
+    "authors": [
+        {
+            "name": "HeYu",
+            "email": "code@qheyu.com"
+        }
+    ],
+    "require": {
+        "composer-plugin-api": "^1.1",
+        "symfony/finder": "^5.2"
+    },
+    "require-dev": {
+        "composer/composer": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "ZipVendor\\": "src"
+        }
+    },
+    "extra": {
+        "class": "ZipVendor\\ZipVendorPlugin"
+    },
+    "scripts": {
+        "post-install-cmd": "ZipVendor\\EventHandler::zipVendor",
+        "post-update-cmd": "ZipVendor\\EventHandler::zipVendor"
+    }
+}
