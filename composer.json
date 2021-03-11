@@ -24,7 +24,7 @@
         "class": "VendorPharPlugin\\VendorPharPlugin"
     },
     "scripts": {
-        "post-install-cmd": "VendorPharPlugin\\EventHandler::handle",
-        "post-update-cmd": "VendorPharPlugin\\EventHandler::handle"
+        "post-install-cmd": "VendorPharPlugin\\VendorPharPlugin::handleEvent",
+        "post-update-cmd": "VendorPharPlugin\\VendorPharPlugin::handleEvent"
     }
 }

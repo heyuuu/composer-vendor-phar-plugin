@@ -6,6 +6,7 @@ use Composer\Composer;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
+use Composer\Script\Event;
 
 class VendorPharPlugin implements PluginInterface, EventSubscriberInterface
 {
@@ -27,8 +28,13 @@ class VendorPharPlugin implements PluginInterface, EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'post-install-cmd' => EventHandler::class . '::handle',
-            'post-update-cmd'  => EventHandler::class . '::handle',
+            'post-install-cmd' => 'handleEvent',
+            'post-update-cmd'  => 'handleEvent',
         ];
+    }
+
+    public static function handleEvent(Event $event)
+    {
+        (new EventHandler())->handle($event);
     }
 }

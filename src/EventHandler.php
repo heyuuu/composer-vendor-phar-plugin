@@ -8,25 +8,23 @@ use Composer\Util\Filesystem;
 
 class EventHandler
 {
-    protected static function checkEnvironment(IOInterface $io): bool
+    /**
+     * @var Event
+     */
+    protected $event;
+
+    /**
+     * @var IOInterface
+     */
+    protected $io;
+
+    public function handle(Event $event)
     {
-        if (!extension_loaded('phar')) {
-            $io->error('Please add extension `phar` to use ZipVendor Plugin');
-            return false;
-        }
+        $this->event = $event;
+        $this->io    = $event->getIO();
 
-        if (ini_get('phar.readonly')) {
-            $io->error('Please set ini phar.readonly=off to use ZipVendor Plugin');
-            return false;
-        }
-
-        return true;
-    }
-
-    public static function handle(Event $event)
-    {
         // 若环境监测未通过，则直接返回
-        if (!static::checkEnvironment($event->getIO())) {
+        if (!static::checkEnvironment()) {
             return;
         }
 
@@ -36,7 +34,7 @@ class EventHandler
         $autoloadFile = $vendorDir . '/autoload.php';
 
         // 重新生成 phar
-        static::rebuildPhar($vendorDir, $pharPath);
+        $this->rebuildPhar($vendorDir, $pharPath);
 
         // 替换自动加载入口
         $content = file_get_contents($autoloadFile);
@@ -49,10 +47,25 @@ AUTOLOAD;
         file_put_contents($autoloadFile, $content);
 
         // 输出日志
-        $event->getIO()->info('Create vendor.phar success');
+        $this->io->info('Create vendor.phar success');
     }
 
-    protected static function rebuildPhar(string $vendorDir, string $pharPath)
+    protected function checkEnvironment(): bool
+    {
+        if (!extension_loaded('phar')) {
+            $this->io->error('Please add extension `phar` to use ZipVendor Plugin');
+            return false;
+        }
+
+        if (ini_get('phar.readonly')) {
+            $this->io->error('Please set ini phar.readonly=off to use ZipVendor Plugin');
+            return false;
+        }
+
+        return true;
+    }
+
+    protected function rebuildPhar(string $vendorDir, string $pharPath)
     {
         (new Filesystem())->remove($pharPath);
         $phar = new \Phar($pharPath);
